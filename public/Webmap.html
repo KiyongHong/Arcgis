@@ -1,52 +1,44 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
-  <title>Load a basic WebMap - 4.0</title>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title></title>
+		<link rel="stylesheet" href="https://js.arcgis.com/3.16/esri/css/esri.css">
+		<script src="https://js.arcgis.com/3.16/"></script>
+		<script>
+			require(["esri/map", "esri/arcgis/utils", "esri/dijit/Legend", "dojo/domReady!"], 
+				function(Map, arcgisUtils, Legend) {
+					arcgisUtils.createMap("24e423858ea14619abc5050f964980fd", "mapDiv").then(function (response) {
+     	  	map = response.map;
 
-  <style>
-    html,
-    body,
-    #viewDiv {
-      padding: 0;
-      margin: 0;
-      height: 100%;
-      width: 100%;
-    }
-  </style>
+					var legend = new Legend({
+						map: map,
+						layerInfos:(arcgisUtils.getLegendLayers(response))
+					}, "legendDiv");
 
-  <link rel="stylesheet" href="https://js.arcgis.com/4.0/esri/css/main.css">
-  <link rel="stylesheet" href="https://js.arcgis.com/4.0/esri/css/calcite/calcite.css">
-
-  <script src="https://js.arcgis.com/4.0/"></script>
-
-  <script>
-    require([
-      "esri/views/MapView",
-      "esri/WebMap",
-      "dojo/domReady!"
-    ], function(MapView, WebMap){
-
-		  var webmap = new WebMap({
-        portalItem: { // autocasts as new PortalItem()
-          id: "f2e9b762544945f390ca4ac3671cfa72"
-        }
-      });
-
-      /************************************************************
-       * Set the WebMap instance to the map property in a MapView.
-       ************************************************************/
-      var view = new MapView({
-        map: webmap,
-        container: "viewDiv"
-      });
-    });
-  </script>
-</head>
-
-<body>
-  <div id="viewDiv"></div>
-</body>
-
+					legend.startup();
+				});
+  		});	
+		</script>
+		<style>
+			html, body, #mapDiv {
+				padding: 0;
+				margin: 0;
+				height: 100%;
+			}
+			#legendDiv{
+				background-color: #fff;
+				position: absolute !important;
+				z-index: 99;
+				top: 10px;
+				right: 20px;
+			}
+		</style>
+  </head>
+	<body class="claro">
+		<div id="mapDiv"></div>
+		<div id="legendDiv"></div>
+	</body>
 </html>
