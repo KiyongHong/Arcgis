@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Create a Web Map</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+
+    <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/3.16/esri/css/esri.css">
+    <style>
+      html,body,#mapDiv, map.container{
+        padding:0;
+        margin:0;
+        height:100%;
+      }
+    </style>
+    <script>var dojoConfig = { parseOnLoad:true };</script>
+    <script src="https://js.arcgis.com/3.16/"></script>
+    <script>
+      var map;
+      require([
+        "esri/map",
+        "dojo/domReady!"], function(Map){
+          var map = new Map("mapDiv",{
+            center: [-56.049, 38.485],
+            zoom: 3,
+            basemap: "gray"
+          });
+        });
+    </script>
+  </head>
+  <body class="claro">
+    <div id="mapDiv"></div>
+  </body>
+</html>
+

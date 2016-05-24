@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Create a Web Map</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+    <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/3.16/esri/css/esri.css">
+    <style>
+      html,body,#map, map.container{
+        padding:0;
+        margin:0;
+        height:100%;
+      }
+
+      #search {
+        display:block;
+        position:absolute;
+        z-index=2;
+        top: 20px;
+        left: 74px;
+      }
+    </style>
+    <script>var dojoConfig = { parseOnLoad:true };</script>
+    <script src="https://js.arcgis.com/3.16/"></script>
+    <script>
+      require([
+        "esri/map",
+        "esri/arcgis/utils",
+        "esri/dijit/Search",
+        "esri/layers/FeatureLayer",
+        "esri/InfoTemplate",
+        "dojo/domReady!"], function(Map, Search, FeatureLayer, InfoTemplate, arcgisUtils){
+
+          //createMap 시작
+          var map;
+
+          var mapid="24e423858ea14619abc5050f964980fd"
+
+          var mapDeferred = esri.arcgis.utils.createMap(mapid, "map", {
+            mapOptions: {
+              slider: true,
+              nav: false
+            }
+          });
+
+          mapDeferred.then(function(response) {
+            map = response.map;
+          });
+          //createMap 끝
+
+          //search 시작
+
+          var search = new Search({
+            enableButtonMode: true,
+            enableLabel: false,
+            enableInfoWindow: true,
+            showInfoWindowOnSelect: false,
+            map: map
+          },"search");
+
+          var sources = search.get("sources");
+
+          sources.push({
+            featureLayer: new FeatureLayer("https://services.arcgis.com/V6ZHFr6zdgNZuVG0/arcgis/rest/services/CongressionalDistricts/FeatureServer/0"),
+            searchFields: ["DISTRICTID"],
+            displayField: "DISTRICTID",
+            exactMatch: false,
+            outFields: ["DISTRICTID", "NAME", "PARTY"],
+            name: "Congressional Districts",
+            placeholder: "3708",
+            maxResults: 6,
+            maxSuggestions: 6,
+            infoTemplate: new InfoTemplate("Congressional District", "District ID: ${DISTRICTID}</br>Name: ${NAME}</br>Party Affiliation: ${PARTY}"),
+            enableSuggestions: true,
+            minCharacters: 0
+         });
+
+         sources.push({
+            featureLayer: new FeatureLayer("https://services.arcgis.com/V6ZHFr6zdgNZuVG0/arcgis/rest/services/US_Senators/FeatureServer/0"),
+            searchFields: ["Name"],
+            displayField: "Name",
+            exactMatch: false,
+            name: "Senator",
+            outFields: ["*"],
+            placeholder: "Senator name",
+            maxResults: 6,
+            maxSuggestions: 6,
+
+            infoTemplate: new InfoTemplate("Senator information", "Name: ${Name}</br>State: ${State}</br>Party Affiliation: ${Party}</br>Phone No: ${Phone_Number}<br><a href=${Web_Page} target=_blank ;'>Website</a>"),
+
+            enableSuggestions: true,
+            minCharacters: 0
+         });
+
+         search.set("sources", sources);
+
+         search.startup();
+         //search 끝
+
+        });
+    </script>
+  </head>
+  <body>
+    <div id="search"></div>
+    <div id="map"></div>
+  </body>
+</html>
+

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Create a Web Map</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+
+    <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/3.16/esri/css/esri.css">
+    <style>
+      html,body,#mapDiv, map.container{
+        padding:0;
+        margin:0;
+        height:100%;
+      }
+      #search {
+        display: block;
+        position: absolute;
+        z-index: 3;
+        top: 20px;
+        left: 75px;
+      }
+    </style>
+    <script>var dojoConfig = { parseOnLoad:true };</script>
+    <script src="https://js.arcgis.com/3.16/"></script>
+    <script>
+      var map;
+      require([
+        "esri/map",
+        "esri/arcgis/utils",
+        "esri/dijit/Search",
+        "esri/geometry/Extent",
+        "esri/graphic",
+        "esri/symbols/SimpleMarkerSymbol",
+        "esri/geometry/screenUtils",
+        "dojo/dom",
+        "dojo/dom-construct",
+        "dojo/query",
+        "dojo/_base/Color",
+        "dojo/domReady!"
+      ], function(Map, arcgisUtils, Search, Extent, Graphic, SimpleMarkerS){
+          arcgisUtils.createMap("24e423858ea14619abc5050f964980fd", "mapDiv").then(function (response){
+            map = response.map;
+          });
+
+          var map = new Map("map", {
+            basemap: "topo",
+            center:[-117.19, 34.055],
+            zoom:15
+          });
+
+          var search = new Search({
+            map: map,
+          }, dom.byId("search"));
+          search.startup();          
+        });
+    </script>
+  </head>
+  <body>
+    <div id="mapDiv"></div>
+    <div id="search"></div>
+  </body>
+</html>
+
